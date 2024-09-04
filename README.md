@@ -3,12 +3,13 @@
 
 ## Technologies used:
 - Frontend:
-  - unknown...
+  - ThailWind CSS 
+  - React
 - Backend:
   - NestJS
   - MongoDB via Mongoose
   - Algolia Search DB
-  - TypeScript
+  - TypeScript   
 
   
 Developed by *Nikola Andreev*, *Blagovest Kostadinov*, *Viktor Krustev*
