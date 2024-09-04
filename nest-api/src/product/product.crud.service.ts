@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { Model, ObjectId } from 'mongoose';
 import { Product } from './data/product.interface';
 import { equals } from 'class-validator';
+import { UpdateProductDto } from './data/product.dto';
 
 @Injectable()
 export class CrudProductService {
@@ -24,5 +25,15 @@ export class CrudProductService {
         product.original_price -
         product.original_price * (product.current_discount / 100),
     };
+  }
+
+  async updateProduct(id: string, product: UpdateProductDto): Promise<Product> {
+    const updatedProduct = await this.productModel.findByIdAndUpdate(
+      id,
+      product,
+      { new: true, runValidators: true },
+    );
+
+    return updatedProduct.toObject();
   }
 }

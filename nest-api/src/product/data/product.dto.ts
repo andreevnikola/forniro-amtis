@@ -9,7 +9,7 @@ import {
   MinLength,
 } from 'class-validator';
 import { Size } from './product.interface';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, PartialType } from '@nestjs/swagger';
 
 export class CreateAndUpdateProductDto {
   @ApiProperty({
@@ -95,7 +95,7 @@ export class CreateAndUpdateProductDto {
   avaliable_colors: string[];
 }
 
-export class CreateAndUpdateResponseDTO {
+export class UpdateAndCreateResponseDTO {
   @ApiProperty({
     description: 'Rhis is the id of the created / updated element',
     example: '66d86ce4f8ddf0f964e91df9',
@@ -103,3 +103,5 @@ export class CreateAndUpdateResponseDTO {
   })
   id: String;
 }
+
+export class UpdateProductDto extends PartialType(CreateAndUpdateProductDto) {}
