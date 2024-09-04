@@ -9,4 +9,6 @@
   - MongoDB via Mongoose
   - Algolia Search DB
   - TypeScript
+
+  
 Developed by *Nikola Andreev*, *Blagovest Kostadinov*, *Viktor Krustev*
