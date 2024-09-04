@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { CrudProductService } from './product.crud.service';
 import { Product } from './data/product.interface';
 import {
@@ -62,5 +70,17 @@ export class ProductsController {
     return {
       id: updated._id,
     };
+  }
+
+  @ApiOperation({ summary: 'Delete a product' })
+  @ApiResponse({
+    status: 200,
+    description: 'Product deleted successfully',
+  })
+  @ApiParam({ name: 'id', required: true })
+  @Delete('/:id')
+  async deleteProduct(@Param('id') id: string): Promise<void> {
+    await this.crud.deleteProduct(id);
+    return;
   }
 }
