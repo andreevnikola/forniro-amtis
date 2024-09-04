@@ -5,7 +5,7 @@ import {
   CreateAndUpdateProductDto,
   CreateAndUpdateResponseDTO,
 } from './data/product.dto';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @Controller('product')
 @ApiTags('Product Operations')
@@ -32,6 +32,13 @@ export class ProductsController {
     };
   }
 
+  @ApiOperation({ summary: 'Get product details' })
+  @ApiResponse({
+    status: 200,
+    description: 'The Product with its details',
+    type: Product,
+  })
+  @ApiParam({ name: 'id', required: true })
   @Get('/:id')
   async getProduct(@Param('id') id: string): Promise<Product> {
     return await this.crud.getProduct(id);
