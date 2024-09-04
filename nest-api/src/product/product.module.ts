@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ProductsController } from './product.controller';
-import { CrudProductService } from './crud.product.service';
+import { CrudProductService } from './product.crud.service';
 import { productProviders } from './product.provider';
 import { DatabaseModule } from 'src/database/database.module';
 
