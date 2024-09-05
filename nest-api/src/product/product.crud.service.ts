@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, UseInterceptors } from '@nestjs/common';
 import { Model, ObjectId } from 'mongoose';
 import { Product } from './data/product.interface';
 import { equals } from 'class-validator';

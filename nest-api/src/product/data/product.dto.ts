@@ -2,6 +2,7 @@ import {
   IsArray,
   IsNotEmpty,
   IsNumber,
+  IsNumberString,
   IsString,
   Max,
   MaxLength,
@@ -10,6 +11,9 @@ import {
 } from 'class-validator';
 import { Size } from './product.interface';
 import { ApiProperty, PartialType } from '@nestjs/swagger';
+import { File } from 'buffer';
+import { Type } from 'class-transformer';
+import { Multer } from 'multer';
 
 export class CreateAndUpdateProductDto {
   @ApiProperty({
@@ -44,9 +48,11 @@ export class CreateAndUpdateProductDto {
   description: string;
 
   @IsNotEmpty()
+  @Type(() => Number)
   @IsNumber()
   original_price: number;
 
+  @Type(() => Number)
   @IsNumber()
   @Min(0)
   @Max(100)
@@ -60,29 +66,12 @@ export class CreateAndUpdateProductDto {
   mark_as_new: boolean | null = null;
 
   @ApiProperty({
-    description: 'URL of the cover photo',
-    example: 'http://example.com/photo.jpg',
-  })
-  @IsString()
-  @IsNotEmpty()
-  cover_photo_url: string;
-
-  @ApiProperty({
-    description: 'List of photo URLs',
-    type: [String],
-    example: ['http://example.com/photo1.jpg', 'http://example.com/photo2.jpg'],
-  })
-  @IsArray()
-  @IsString({ each: true })
-  photos: string[];
-
-  @ApiProperty({
     description: 'List of available sizes',
     type: [String],
     example: ['S', 'M', 'L'],
   })
-  @IsArray()
   @IsString({ each: true })
+  @Type(() => String)
   avaliable_sizes: Size[];
 
   @ApiProperty({
@@ -90,9 +79,16 @@ export class CreateAndUpdateProductDto {
     type: [String],
     example: ['red', 'blue', 'green'],
   })
-  @IsArray()
+  @Type(() => String)
   @IsString({ each: true })
   avaliable_colors: string[];
+
+  // @ApiProperty({
+  //   description: 'The primary photo of the product',
+  //   format: 'binary',
+  // })
+  // @IsNotEmpty()
+  // cover_photo: any;
 }
 
 export class UpdateAndCreateResponseDTO {

@@ -3,9 +3,12 @@ import {
   Controller,
   Delete,
   Get,
+  HttpException,
   Param,
   Patch,
   Post,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
 import { CrudProductService } from './product.crud.service';
 import { Product } from './data/product.interface';
@@ -15,11 +18,16 @@ import {
   UpdateProductDto,
 } from './data/product.dto';
 import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { S3Service } from 'src/s3.service';
 
 @Controller('product')
 @ApiTags('Product Operations')
 export class ProductsController {
-  constructor(private readonly crud: CrudProductService) {}
+  constructor(
+    private readonly crud: CrudProductService,
+    private readonly s3: S3Service,
+  ) {}
 
   @Post()
   @ApiOperation({ summary: 'Create a product' })
@@ -28,16 +36,31 @@ export class ProductsController {
     description: 'Product created successfully',
     type: UpdateAndCreateResponseDTO,
   })
+  @UseInterceptors(FileInterceptor('cover_photo'))
   async createProduct(
     @Body() productFromDto: CreateAndUpdateProductDto,
+    @UploadedFile() cover_photo: Express.Multer.File,
   ): Promise<UpdateAndCreateResponseDTO> {
+    let uploaded = null;
+    try {
+      uploaded = await this.s3.uploadFile(cover_photo);
+    } catch (e) {
+      throw new HttpException('Unable to upload image to S3', 500);
+    }
+
+    if (!uploaded) {
+      throw new HttpException('Unable to upload image to S3', 500);
+    }
+
     const created = await this.crud.createProduct({
       ...productFromDto,
+      cover_photo_url: uploaded.Location,
+      photos: [],
       mark_as_new: productFromDto.mark_as_new ?? true,
     });
 
     return {
-      id: created._id.toString(),
+      id: created._id,
     };
   }
 
