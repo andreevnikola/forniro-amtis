@@ -9,6 +9,7 @@ import {
   Patch,
   Post,
   UploadedFile,
+  UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
 import { CrudProductService } from './product.crud.service';
@@ -25,7 +26,10 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { FileInterceptor } from '@nestjs/platform-express';
+import {
+  FileFieldsInterceptor,
+  FileInterceptor,
+} from '@nestjs/platform-express';
 import { S3Service } from 'src/s3.service';
 
 @Controller('product')
@@ -36,6 +40,25 @@ export class ProductsController {
     private readonly s3: S3Service,
   ) {}
 
+  async populatePhotos(photos: Express.Multer.File[]): Promise<string[]> {
+    try {
+      return Promise.all(
+        photos.map(async (photo) => {
+          const uploaded = await this.s3.uploadFile(photo, {
+            compression: {
+              compressWidth: 1200,
+              quality: 70,
+              // aspectRatio: [16, 9],
+            },
+          });
+          return uploaded.Location;
+        }),
+      );
+    } catch (error) {
+      throw new HttpException('Unable to upload new photos to S3', 500);
+    }
+  }
+
   @Post()
   @ApiOperation({ summary: 'Create a product' })
   @ApiResponse({
@@ -44,16 +67,25 @@ export class ProductsController {
     type: UpdateAndCreateResponseDTO,
   })
   @UseInterceptors(
-    FileInterceptor('cover_photo', {
-      limits: {
-        fileSize: 1024 * 1024 * 5, // 5MB
+    FileFieldsInterceptor([
+      {
+        name: 'cover_photo',
+        maxCount: 1,
       },
-    }),
+      { name: 'photos', maxCount: 10 },
+    ]),
   )
   async createProduct(
     @Body() productFromDto: CreateAndUpdateProductDto,
-    @UploadedFile() cover_photo: Express.Multer.File,
+    @UploadedFiles()
+    files: {
+      cover_photo: Express.Multer.File[];
+      photos: Express.Multer.File[];
+    },
   ): Promise<UpdateAndCreateResponseDTO> {
+    const cover_photo = files.cover_photo[0];
+    const photos = files.photos;
+
     let uploaded_compressed_cover, uploaded_fullsize_cover;
     try {
       uploaded_compressed_cover = await this.s3.uploadFile(cover_photo, {
@@ -73,14 +105,16 @@ export class ProductsController {
         },
       });
     } catch (error) {
-      throw new HttpException('Unable to upload new image to S3', 500);
+      throw new HttpException('Unable to upload new cover image to S3', 500);
     }
+
+    const photos_urls: string[] = await this.populatePhotos(photos);
 
     const created = await this.crud.createProduct({
       ...productFromDto,
       cover_photo_url: uploaded_fullsize_cover.Location,
       compressed_cover_photo_url: uploaded_compressed_cover.Location,
-      photos: [],
+      photos: photos_urls,
       mark_as_new: productFromDto.mark_as_new ?? true,
     });
 

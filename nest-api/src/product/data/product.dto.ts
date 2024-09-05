@@ -85,6 +85,7 @@ export class CreateAndUpdateProductDto {
 
   cover_photo_url: string;
   compressed_cover_photo_url: string;
+  photos: string[];
 
   // @ApiProperty({
   //   description: 'The primary photo of the product',
