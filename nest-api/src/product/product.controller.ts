@@ -54,17 +54,32 @@ export class ProductsController {
     @Body() productFromDto: CreateAndUpdateProductDto,
     @UploadedFile() cover_photo: Express.Multer.File,
   ): Promise<UpdateAndCreateResponseDTO> {
-    let uploaded = null;
+    let uploaded_compressed_cover, uploaded_fullsize_cover;
     try {
-      uploaded = await this.s3.uploadFile(cover_photo);
-      if (!uploaded) throw new Error();
-    } catch (e) {
-      throw new HttpException('Unable to upload image to S3', 500);
+      uploaded_compressed_cover = await this.s3.uploadFile(cover_photo, {
+        prefix: 'compressed',
+        compression: {
+          compressWidth: 550,
+          aspectRatio: [16, 9],
+          quality: 60,
+        },
+      });
+
+      uploaded_fullsize_cover = await this.s3.uploadFile(cover_photo, {
+        compression: {
+          compressWidth: 1200,
+          quality: 80,
+          aspectRatio: [16, 9],
+        },
+      });
+    } catch (error) {
+      throw new HttpException('Unable to upload new image to S3', 500);
     }
 
     const created = await this.crud.createProduct({
       ...productFromDto,
-      cover_photo_url: uploaded.Location,
+      cover_photo_url: uploaded_fullsize_cover.Location,
+      compressed_cover_photo_url: uploaded_compressed_cover.Location,
       photos: [],
       mark_as_new: productFromDto.mark_as_new ?? true,
     });
