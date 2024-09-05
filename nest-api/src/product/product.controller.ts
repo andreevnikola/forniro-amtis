@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Header,
   HttpException,
   Param,
   Patch,
@@ -17,7 +18,13 @@ import {
   UpdateAndCreateResponseDTO,
   UpdateProductDto,
 } from './data/product.dto';
-import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBody,
+  ApiOperation,
+  ApiParam,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { S3Service } from 'src/s3.service';
 
@@ -36,7 +43,13 @@ export class ProductsController {
     description: 'Product created successfully',
     type: UpdateAndCreateResponseDTO,
   })
-  @UseInterceptors(FileInterceptor('cover_photo'))
+  @UseInterceptors(
+    FileInterceptor('cover_photo', {
+      limits: {
+        fileSize: 1024 * 1024 * 5, // 5MB
+      },
+    }),
+  )
   async createProduct(
     @Body() productFromDto: CreateAndUpdateProductDto,
     @UploadedFile() cover_photo: Express.Multer.File,
@@ -44,11 +57,8 @@ export class ProductsController {
     let uploaded = null;
     try {
       uploaded = await this.s3.uploadFile(cover_photo);
+      if (!uploaded) throw new Error();
     } catch (e) {
-      throw new HttpException('Unable to upload image to S3', 500);
-    }
-
-    if (!uploaded) {
       throw new HttpException('Unable to upload image to S3', 500);
     }
 
@@ -84,11 +94,50 @@ export class ProductsController {
   })
   @ApiParam({ name: 'id', required: true })
   @Patch('/:id')
+  @UseInterceptors(FileInterceptor('cover_photo'))
   async updateProduct(
     @Param('id') id: string,
+    @UploadedFile() cover_photo: Express.Multer.File,
     @Body() productFromDto: UpdateProductDto,
   ): Promise<UpdateAndCreateResponseDTO> {
-    const updated = await this.crud.updateProduct(id, productFromDto);
+    let uploaded_compressed_cover = null;
+    let uploaded_fullsize_cover = null;
+    const { cover_photo_url, compressed_cover_photo_url } =
+      await this.crud.getProduct(id);
+    if (cover_photo) {
+      const success = await this.s3.deleteFile(cover_photo_url);
+
+      try {
+        uploaded_compressed_cover = await this.s3.uploadFile(cover_photo, {
+          prefix: 'compressed',
+          compression: {
+            compressWidth: 550,
+            aspectRatio: [16, 9],
+            quality: 60,
+          },
+        });
+
+        uploaded_fullsize_cover = await this.s3.uploadFile(cover_photo, {
+          compression: {
+            compressWidth: 1200,
+            quality: 80,
+            aspectRatio: [16, 9],
+          },
+        });
+      } catch (error) {
+        throw new HttpException('Unable to upload new image to S3', 500);
+      }
+    }
+
+    const updated = await this.crud.updateProduct(id, {
+      ...productFromDto,
+      compressed_cover_photo_url: uploaded_compressed_cover
+        ? uploaded_compressed_cover.Location
+        : compressed_cover_photo_url,
+      cover_photo_url: uploaded_fullsize_cover
+        ? uploaded_fullsize_cover.Location
+        : cover_photo_url,
+    });
 
     return {
       id: updated._id,

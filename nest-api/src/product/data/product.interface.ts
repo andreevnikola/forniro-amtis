@@ -85,6 +85,8 @@ export class Product {
     type: [String],
   })
   avaliable_colors: string[];
+
+  compressed_cover_photo_url?: string;
 }
 
 export type Size = 'XS' | 'S' | 'M' | 'L' | 'XL' | 'XXL' | 'XXXL';

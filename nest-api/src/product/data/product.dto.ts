@@ -83,6 +83,9 @@ export class CreateAndUpdateProductDto {
   @IsString({ each: true })
   avaliable_colors: string[];
 
+  cover_photo_url: string;
+  compressed_cover_photo_url: string;
+
   // @ApiProperty({
   //   description: 'The primary photo of the product',
   //   format: 'binary',

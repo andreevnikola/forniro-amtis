@@ -9,6 +9,8 @@ async function bootstrap() {
     logger: ['error', 'warn', 'log', 'debug'],
   });
 
+  app.setGlobalPrefix('api');
+
   const config = new DocumentBuilder()
     .setTitle('Furniro API')
     .setDescription('This is the API for the Furniro web store')

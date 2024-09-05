@@ -1,5 +1,6 @@
 import { HttpException, Injectable, Logger } from '@nestjs/common';
 import * as AWS from 'aws-sdk';
+import * as sharp from 'sharp';
 
 @Injectable()
 export class S3Service {
@@ -11,26 +12,70 @@ export class S3Service {
     secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
   });
 
-  getUploadUrl;
-
-  async uploadFile(file) {
-    console.log(file);
+  async uploadFile(
+    file: Express.Multer.File,
+    props?: {
+      prefix?: string;
+      compression?: {
+        compressWidth?: number;
+        aspectRatio?: [number, number];
+        quality?: number;
+      };
+    },
+  ) {
+    const { compression, prefix } = props ?? {};
     const { originalname } = file;
 
+    let compressedBuffer = file.buffer;
+
+    if (compression && compression.compressWidth) {
+      try {
+        if (compression.aspectRatio)
+          compressedBuffer = await sharp(file.buffer)
+            .resize(
+              compression.compressWidth,
+              Math.ceil(
+                compression.compressWidth *
+                  (compression.aspectRatio[1] / compression.aspectRatio[0]),
+              ),
+            )
+            .jpeg({ quality: compression?.quality || 80 })
+            .toBuffer();
+        else
+          compressedBuffer = await sharp(file.buffer)
+            .resize(compression.compressWidth)
+            .jpeg({ quality: compression?.quality || 80 })
+            .toBuffer();
+      } catch (e) {
+        this.logger.error('Unable to compress image');
+        console.error(e);
+      }
+    }
+
+    return await this.s3_upload(
+      compressedBuffer,
+      this.AWS_S3_BUCKET,
+      (prefix ? prefix : '') + '_' + originalname,
+      file.mimetype,
+    );
+  }
+
+  async deleteFile(location: string): Promise<boolean> {
+    let params = {
+      Bucket: this.AWS_S3_BUCKET,
+      Key: location.split('amazonaws.com/')[1],
+    };
+
     try {
-      return await this.s3_upload(
-        file.buffer,
-        this.AWS_S3_BUCKET,
-        originalname,
-        file.mimetype,
-      );
+      await this.s3.deleteObject(params).promise();
+      return true;
     } catch (e) {
-      Logger.error('Unable to upload image to S3');
-      throw new Error('Unable to upload image to S3');
+      this.logger.error('Unable to delete image from S3');
+      return false;
     }
   }
 
-  async s3_upload(file, bucket, name, mimetype) {
+  private async s3_upload(file, bucket, name, mimetype) {
     const params = {
       Bucket: bucket,
       Key: String(name),
@@ -46,7 +91,7 @@ export class S3Service {
       let s3Response = await this.s3.upload(params).promise();
       return s3Response;
     } catch (e) {
-      console.log(e);
+      this.logger.error('Unable to upload image to S3');
     }
   }
 }

@@ -12,4 +12,5 @@ export const ProductSchema = new mongoose.Schema<Product>({
   original_price: Number,
   photos: Array<String>,
   short_description: String,
+  compressed_cover_photo_url: String,
 });
