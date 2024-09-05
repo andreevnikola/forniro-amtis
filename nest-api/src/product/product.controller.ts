@@ -194,6 +194,26 @@ export class ProductsController {
     };
   }
 
+  @Post('/:id/photos')
+  @ApiOperation({ summary: 'Add photo to a product' })
+  @ApiResponse({
+    status: 200,
+    description: 'Photo added successfully',
+  })
+  @ApiParam({ name: 'id', required: true })
+  @UseInterceptors(FileInterceptor('photo'))
+  async addPhoto(
+    @Param('id') id: string,
+    @UploadedFile() photo: Express.Multer.File,
+  ): Promise<void> {
+    const { photos } = await this.crud.getProduct(id);
+    const new_photos = await this.populatePhotos([photo]);
+    const updated_photos = [...photos, ...new_photos];
+
+    await this.crud.updateProduct(id, { photos: updated_photos });
+    return;
+  }
+
   @ApiOperation({ summary: 'Delete a product' })
   @ApiResponse({
     status: 200,

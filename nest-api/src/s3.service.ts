@@ -55,7 +55,9 @@ export class S3Service {
     return await this.s3_upload(
       compressedBuffer,
       this.AWS_S3_BUCKET,
-      (prefix ? prefix : '') + '_' + originalname,
+      (prefix ? prefix : '') +
+        '_' +
+        (Math.random() + 1).toString(36).substring(15),
       file.mimetype,
     );
   }
