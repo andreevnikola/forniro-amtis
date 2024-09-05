@@ -105,7 +105,8 @@ export class ProductsController {
     const { cover_photo_url, compressed_cover_photo_url } =
       await this.crud.getProduct(id);
     if (cover_photo) {
-      const success = await this.s3.deleteFile(cover_photo_url);
+      await this.s3.deleteFile(cover_photo_url);
+      await this.s3.deleteFile(compressed_cover_photo_url);
 
       try {
         uploaded_compressed_cover = await this.s3.uploadFile(cover_photo, {
