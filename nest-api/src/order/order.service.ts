@@ -76,9 +76,17 @@ export class OrderService {
 
   async delete(id: string): Promise<FoundAndSucessObject> {
     try {
-      const deleted = await this.orderModel.findByIdAndDelete(id).exec();
+      var order = await this.orderModel.findById(id).exec();
     } catch {
       return { found: false, success: false };
+    }
+
+    if (order.payed) return { found: true, success: false };
+
+    try {
+      const deleted = await this.orderModel.findByIdAndDelete(id).exec();
+    } catch {
+      return { found: true, success: false };
     }
 
     return { found: true, success: true };

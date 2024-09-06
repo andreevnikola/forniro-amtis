@@ -72,8 +72,11 @@ export class OrderController {
   @ApiParam({ name: 'id', type: String, description: 'Order id' })
   async remove(@Param() params: ValidatedIdParam) {
     const success = await this.orderService.delete(params.id);
-    if (!success) {
+    if (!success.found) {
       throw new HttpException('Order deletion failed', 500);
+    }
+    if (!success.success) {
+      throw new HttpException('Something went wrong', 500);
     }
     return;
   }
