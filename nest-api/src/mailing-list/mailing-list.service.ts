@@ -59,20 +59,29 @@ export class MailingListService {
     return deleted.deletedCount > 0;
   }
 
-  async sendEmail(subject: string, body: string) {
-    const subscribers = await this.findAll();
+  async sendEmail(subject: string, body: string, email?: string) {
+    if (!email) {
+      const subscribers = await this.findAll();
 
-    await Promise.all(
-      subscribers.map(
-        async (recipient) =>
-          await this.transporter.sendMail({
-            from: process.env.EMAIL_USER,
-            to: recipient.email,
-            subject,
-            html: body,
-          }),
-      ),
-    );
+      await Promise.all(
+        subscribers.map(
+          async (recipient) =>
+            await this.transporter.sendMail({
+              from: process.env.EMAIL_USER,
+              to: recipient.email,
+              subject,
+              html: body,
+            }),
+        ),
+      );
+    } else {
+      await this.transporter.sendMail({
+        from: process.env.EMAIL_USER,
+        to: email,
+        subject,
+        html: body,
+      });
+    }
 
     return { success: true };
   }

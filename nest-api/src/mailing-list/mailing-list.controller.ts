@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { MailingListService } from './mailing-list.service';
 import { CreateMailingListDto } from './data/create-mailing-list.dto';
-import { ApiOperation } from '@nestjs/swagger';
+import { ApiOperation, ApiParam } from '@nestjs/swagger';
 import { SendMailDto } from './data/send-mail.dto';
 
 @Controller('mailing-list')
@@ -44,6 +44,19 @@ export class MailingListController {
     if (!success) {
       throw new HttpException('Email not found in mailing list', 404);
     }
+  }
+  @Post(':email/send')
+  @ApiOperation({ summary: 'Send an email to a specific subscriber' })
+  @ApiParam({ name: 'email', type: String, description: 'Subscriber email' })
+  async sendEmailToSubscriber(
+    @Param('email') email: string,
+    @Body() sendDto: SendMailDto,
+  ) {
+    return await this.mailingListService.sendEmail(
+      sendDto.subject,
+      sendDto.body,
+      email,
+    );
   }
 
   @Post('send')
