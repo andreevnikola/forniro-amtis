@@ -7,6 +7,7 @@ import { S3Service } from 'src/s3.service';
 import { CategoryService } from 'src/category/category.service';
 import { CategoryModule } from 'src/category/category.module';
 import { categoryProviders } from 'src/category/category.provider';
+import { ProductReviewsService } from './product-reviews.service';
 
 @Module({
   imports: [DatabaseModule],
@@ -14,6 +15,7 @@ import { categoryProviders } from 'src/category/category.provider';
   providers: [
     CrudProductService,
     S3Service,
+    ProductReviewsService,
     CategoryService,
     Logger,
     ...productProviders,

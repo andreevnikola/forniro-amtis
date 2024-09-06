@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { Product } from './product.interface';
+import { Product, Review } from './product.interface';
 
 export const ProductSchema = new mongoose.Schema<Product>(
   {
@@ -18,6 +18,9 @@ export const ProductSchema = new mongoose.Schema<Product>(
       ref: 'Category',
     } as any,
     compressed_cover_photo_url: String,
+    avg_rating: Number,
+    num_reviews: Number,
+    reviews: Array<Review>,
   },
   { timestamps: true },
 );

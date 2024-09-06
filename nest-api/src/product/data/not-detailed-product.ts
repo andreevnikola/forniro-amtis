@@ -38,4 +38,16 @@ export class NotDetailedProduct {
     example: '2021-03-01T00:00:00.000Z',
   })
   createdAt: Date;
+
+  @ApiProperty({
+    name: 'The average rating of the product',
+    example: 4.5,
+  })
+  avg_rating: number;
+
+  @ApiProperty({
+    name: 'The number of ratings the product has',
+    example: 10,
+  })
+  num_reviews: number;
 }

@@ -2,6 +2,21 @@ import { ApiProperty } from '@nestjs/swagger';
 import { ProductSchema } from './product.schema';
 import mongoose, { Mongoose } from 'mongoose';
 
+export class Review {
+  @ApiProperty({
+    description: 'The rating of the product given by the writer of this review',
+    example: 4.5,
+  })
+  rating: number;
+
+  @ApiProperty({
+    description:
+      'The comment of the product review given by the writer of this review',
+    example: 'This is a great product',
+  })
+  comment?: string;
+}
+
 export class Product {
   category?: mongoose.Types.ObjectId;
 
@@ -96,6 +111,24 @@ export class Product {
     example: '2021-03-01T00:00:00.000Z',
   })
   createdAt?: Date;
+
+  @ApiProperty({
+    description: 'The average rating of the product',
+    example: 4.5,
+  })
+  avg_rating: number;
+
+  @ApiProperty({
+    description: 'The number of ratings the product has',
+    example: 10,
+  })
+  num_reviews: number;
+
+  @ApiProperty({
+    description: 'The ratings of the product',
+    type: [Review],
+  })
+  reviews: Review[];
 }
 
 export type Size = 'XS' | 'S' | 'M' | 'L' | 'XL' | 'XXL' | 'XXXL';

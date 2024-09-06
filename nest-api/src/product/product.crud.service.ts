@@ -46,6 +46,8 @@ export class CrudProductService {
       cover_photo_url: product.cover_photo_url,
       current_discount: product.current_discount,
       createdAt: product.createdAt,
+      avg_rating: product.avg_rating,
+      num_reviews: product.num_reviews,
       current_price:
         product.original_price -
         product.original_price * (product.current_discount / 100),

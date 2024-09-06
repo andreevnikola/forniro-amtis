@@ -13,7 +13,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { CrudProductService } from './product.crud.service';
-import { Product } from './data/product.interface';
+import { Product, Review } from './data/product.interface';
 import {
   CreateAndUpdateProductDto,
   UpdateAndCreateResponseDTO,
@@ -33,6 +33,8 @@ import {
 import { S3Service } from 'src/s3.service';
 import mongoose, { mongo } from 'mongoose';
 import { CategoryService } from 'src/category/category.service';
+import { ValidatedIdParam } from 'src/constants';
+import { ProductReviewsService } from './product-reviews.service';
 
 @Controller('product')
 @ApiTags('Product Operations')
@@ -40,7 +42,7 @@ export class ProductsController {
   constructor(
     private readonly crud: CrudProductService,
     private readonly s3: S3Service,
-    private readonly categoryService: CategoryService,
+    private readonly reviewService: ProductReviewsService,
   ) {}
 
   async populatePhotos(photos: Express.Multer.File[]): Promise<string[]> {
@@ -120,6 +122,9 @@ export class ProductsController {
       compressed_cover_photo_url: uploaded_compressed_cover.Location,
       photos: photos_urls,
       mark_as_new: productFromDto.mark_as_new ?? true,
+      num_reviews: 0,
+      reviews: [],
+      avg_rating: 0,
     });
 
     return {
@@ -265,6 +270,26 @@ export class ProductsController {
     await this.s3.deleteFile(deleted.compressed_cover_photo_url);
     await this.s3.deleteFile(deleted.cover_photo_url);
     await Promise.all(deleted.photos.map((photo) => this.s3.deleteFile(photo)));
+
+    return;
+  }
+
+  @Post('/:id/review')
+  @ApiOperation({
+    summary: 'Add a review to a product',
+    description: 'Add a review to a product',
+  })
+  @ApiParam({ name: 'id', required: true })
+  @ApiResponse({
+    status: 200,
+    description: 'Review added successfully',
+  })
+  async addReview(@Param() params: ValidatedIdParam, @Body() review: Review) {
+    const success = await this.reviewService.createReview(params.id, review);
+    if (!success.found) {
+      throw new HttpException('Product not found', 404);
+    }
+    if (!success.success) throw new HttpException('Review not added', 500);
 
     return;
   }
