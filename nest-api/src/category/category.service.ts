@@ -25,6 +25,14 @@ export class CategoryService {
     return created.toObject();
   }
 
+  async removeProductFromCategory(categoryId: string, productId: string) {
+    await this.categoryModel
+      .findByIdAndUpdate(categoryId, {
+        $pull: { products: new mongoose.mongo.ObjectId(productId) },
+      })
+      .exec();
+  }
+
   async addProductToCategory(
     categoryId: mongoose.mongo.ObjectId,
     productId: string,

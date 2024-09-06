@@ -198,6 +198,18 @@ export class ProductsController {
         : cover_photo_url,
     });
 
+    if (productFromDto.category) {
+      await this.categoryService.addProductToCategory(
+        new mongoose.mongo.ObjectId(productFromDto.category),
+        updated._id,
+      );
+
+      await this.categoryService.removeProductFromCategory(
+        productFromDto.category,
+        updated._id,
+      );
+    }
+
     return {
       id: updated._id,
     };
