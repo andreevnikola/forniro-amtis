@@ -31,6 +31,8 @@ import {
   FileInterceptor,
 } from '@nestjs/platform-express';
 import { S3Service } from 'src/s3.service';
+import mongoose, { mongo } from 'mongoose';
+import { CategoryService } from 'src/category/category.service';
 
 @Controller('product')
 @ApiTags('Product Operations')
@@ -38,6 +40,7 @@ export class ProductsController {
   constructor(
     private readonly crud: CrudProductService,
     private readonly s3: S3Service,
+    private readonly categoryService: CategoryService,
   ) {}
 
   async populatePhotos(photos: Express.Multer.File[]): Promise<string[]> {
@@ -112,11 +115,17 @@ export class ProductsController {
 
     const created = await this.crud.createProduct({
       ...productFromDto,
+      category: new mongoose.mongo.ObjectId(productFromDto.category),
       cover_photo_url: uploaded_fullsize_cover.Location,
       compressed_cover_photo_url: uploaded_compressed_cover.Location,
       photos: photos_urls,
       mark_as_new: productFromDto.mark_as_new ?? true,
     });
+
+    await this.categoryService.addProductToCategory(
+      new mongoose.mongo.ObjectId(productFromDto.category),
+      created._id,
+    );
 
     return {
       id: created._id,

@@ -83,6 +83,14 @@ export class CreateAndUpdateProductDto {
   @IsString({ each: true })
   avaliable_colors: string[];
 
+  @ApiProperty({
+    description: 'the id of the related category',
+    type: String,
+  })
+  @IsString()
+  @IsNotEmpty()
+  category: string;
+
   cover_photo_url: string;
   compressed_cover_photo_url: string;
   photos: string[];

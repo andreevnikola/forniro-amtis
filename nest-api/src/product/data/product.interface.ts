@@ -1,7 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { ProductSchema } from './product.schema';
+import mongoose, { Mongoose } from 'mongoose';
 
 export class Product {
+  category?: mongoose.Types.ObjectId;
+
   @ApiProperty({
     description: 'Unique identifier for the product',
     example: '603dcd527f1c2b3418baf7b6',

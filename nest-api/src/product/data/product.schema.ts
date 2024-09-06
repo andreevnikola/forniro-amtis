@@ -12,5 +12,9 @@ export const ProductSchema = new mongoose.Schema<Product>({
   original_price: Number,
   photos: Array<String>,
   short_description: String,
+  category: {
+    type: mongoose.Types.ObjectId,
+    ref: 'Category',
+  } as any,
   compressed_cover_photo_url: String,
 });
