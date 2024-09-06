@@ -24,7 +24,7 @@ export class S3Service {
     },
   ) {
     const { compression, prefix } = props ?? {};
-    const { originalname } = file;
+    const { filename } = file;
 
     let compressedBuffer = file.buffer;
 
@@ -57,7 +57,8 @@ export class S3Service {
       this.AWS_S3_BUCKET,
       (prefix ? prefix : '') +
         '_' +
-        (Math.random() + 1).toString(36).substring(15),
+        (Math.floor(Math.random() * 999999999999) + 1) +
+        '.jpg',
       file.mimetype,
     );
   }
@@ -65,7 +66,9 @@ export class S3Service {
   async deleteFile(location: string): Promise<boolean> {
     let params = {
       Bucket: this.AWS_S3_BUCKET,
-      Key: location.split('amazonaws.com/')[1],
+      Key: location.includes('amazonaws.com/')
+        ? location.split('amazonaws.com/')[1]
+        : location,
     };
 
     try {

@@ -214,6 +214,39 @@ export class ProductsController {
     return;
   }
 
+  @Delete('/:id/photos/:photo_id')
+  @ApiOperation({ summary: 'Delete a photo from a product' })
+  @ApiResponse({
+    status: 200,
+    description: 'Photo deleted successfully',
+  })
+  @ApiParam({ name: 'id', required: true })
+  @ApiParam({
+    name: 'photo_id',
+    required: true,
+    description:
+      'A photo id is the part from the image url after amazonaws.com/',
+  })
+  async deletePhoto(
+    @Param('id') id: string,
+    @Param('photo_id') photo_id: string,
+  ): Promise<void> {
+    const { photos } = await this.crud.getProduct(id);
+    const updated_photos = photos.filter(
+      (photo) =>
+        photo !==
+        'https://furniro-amtis.s3.eu-north-1.amazonaws.com/' + photo_id,
+    );
+
+    const success = await this.s3.deleteFile(photo_id);
+    if (!success) {
+      throw new HttpException('Photo ID is wrong', 404);
+    }
+
+    await this.crud.updateProduct(id, { photos: updated_photos });
+    return;
+  }
+
   @ApiOperation({ summary: 'Delete a product' })
   @ApiResponse({
     status: 200,
@@ -222,7 +255,13 @@ export class ProductsController {
   @ApiParam({ name: 'id', required: true })
   @Delete('/:id')
   async deleteProduct(@Param('id') id: string): Promise<void> {
-    await this.crud.deleteProduct(id);
+    const deleted = await this.crud.deleteProduct(id);
+    if (!deleted) throw new HttpException('Product not found', 404);
+
+    await this.s3.deleteFile(deleted.compressed_cover_photo_url);
+    await this.s3.deleteFile(deleted.cover_photo_url);
+    await Promise.all(deleted.photos.map((photo) => this.s3.deleteFile(photo)));
+
     return;
   }
 }

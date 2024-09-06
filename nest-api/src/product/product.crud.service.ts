@@ -37,8 +37,8 @@ export class CrudProductService {
     return updatedProduct.toObject();
   }
 
-  async deleteProduct(id: string): Promise<boolean> {
+  async deleteProduct(id: string): Promise<Product> {
     const deleted = await this.productModel.findByIdAndDelete(id).exec();
-    return !!deleted;
+    return deleted.toObject();
   }
 }
