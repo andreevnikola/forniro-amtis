@@ -4,6 +4,7 @@ import { Product } from './data/product.interface';
 import { equals } from 'class-validator';
 import { UpdateProductDto } from './data/product.dto';
 import { CategoryService } from 'src/category/category.service';
+import { NotDetailedProduct } from './data/not-detailed-product';
 
 @Injectable()
 export class CrudProductService {
@@ -17,6 +18,31 @@ export class CrudProductService {
     const created = await createdProduct.save();
 
     return created.toObject();
+  }
+
+  async findByCategory(categoryId: string): Promise<NotDetailedProduct[]> {
+    const products = await this.productModel
+      .find({ category: new mongoose.mongo.ObjectId(categoryId) })
+      .exec();
+    return products.map((product) => ({
+      name: product.name,
+      description: product.description,
+      cover_photo_url: product.cover_photo_url,
+      current_discount: product.current_discount,
+      current_price:
+        product.original_price -
+        product.original_price * (product.current_discount / 100),
+    }));
+  }
+
+  async deleteByCategory(categoryId: string): Promise<boolean> {
+    const deleted = await this.productModel
+      .deleteMany({ category: new mongoose.mongo.ObjectId(categoryId) })
+      .exec();
+    if (deleted.deletedCount === 0) {
+      return false;
+    }
+    return true;
   }
 
   async getProduct(id: string): Promise<Product> {

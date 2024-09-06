@@ -122,11 +122,6 @@ export class ProductsController {
       mark_as_new: productFromDto.mark_as_new ?? true,
     });
 
-    await this.categoryService.addProductToCategory(
-      new mongoose.mongo.ObjectId(productFromDto.category),
-      created._id,
-    );
-
     return {
       id: created._id,
     };
@@ -197,18 +192,6 @@ export class ProductsController {
         ? uploaded_fullsize_cover.Location
         : cover_photo_url,
     });
-
-    if (productFromDto.category) {
-      await this.categoryService.addProductToCategory(
-        new mongoose.mongo.ObjectId(productFromDto.category),
-        updated._id,
-      );
-
-      await this.categoryService.removeProductFromCategory(
-        productFromDto.category,
-        updated._id,
-      );
-    }
 
     return {
       id: updated._id,

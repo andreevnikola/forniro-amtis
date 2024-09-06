@@ -19,50 +19,52 @@ export class CategoryService {
     const createdProduct = new this.categoryModel({
       name: createCategoryDto.name,
       cover_photo_url,
-      products: [],
     });
     const created = await createdProduct.save();
     return created.toObject();
   }
 
-  async removeProductFromCategory(categoryId: string, productId: string) {
-    await this.categoryModel
-      .findByIdAndUpdate(categoryId, {
-        $pull: { products: new mongoose.mongo.ObjectId(productId) },
-      })
-      .exec();
+  async findAll() {
+    return await this.categoryModel.find().exec();
   }
 
-  async addProductToCategory(
-    categoryId: mongoose.mongo.ObjectId,
-    productId: string,
+  async findOne(id: string) {
+    const category = await this.categoryModel.findById(id).exec();
+    if (!category) {
+      return null;
+    }
+    return {
+      category: category.toObject(),
+      products: await this.productService.findByCategory(category._id),
+    };
+  }
+
+  async update(
+    id: string,
+    updateCategoryDto: UpdateCategoryDto,
+    newCoverURL: null | string,
   ) {
-    const category = await this.categoryModel.findById(categoryId);
-    const products = [
-      ...category.toObject().products,
-      new mongoose.mongo.ObjectId(productId),
-    ];
-    await this.categoryModel
-      .findByIdAndUpdate(categoryId, {
-        new: true,
-        products: products,
+    console.log('updateCategoryDto', newCoverURL);
+    const updated = await this.categoryModel
+      .findByIdAndUpdate(id, {
+        ...updateCategoryDto,
+        ...(newCoverURL && { cover_photo_url: newCoverURL }),
       })
       .exec();
+
+    if (!updated) {
+      return null;
+    }
+    return updated.toObject();
   }
 
-  findAll() {
-    return `This action returns all category`;
-  }
+  async remove(id: string) {
+    const deleted = await this.categoryModel.deleteOne({ _id: id }).exec();
+    if (deleted.deletedCount === 0) {
+      return null;
+    }
 
-  findOne(id: number) {
-    return `This action returns a #${id} category`;
-  }
-
-  update(id: number, updateCategoryDto: UpdateCategoryDto) {
-    return `This action updates a #${id} category`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} category`;
+    await this.productService.deleteByCategory(id);
+    return true;
   }
 }
