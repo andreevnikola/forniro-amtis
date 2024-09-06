@@ -7,3 +7,8 @@ export class ValidatedIdParam {
   @IsNotEmpty()
   id: string;
 }
+
+export class FoundAndSucessObject {
+  found: boolean;
+  success: boolean;
+}
