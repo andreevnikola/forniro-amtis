@@ -22,6 +22,10 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe());
 
+  app.use(
+    '/api/stripe/webhook',
+    require('body-parser').raw({ type: 'application/json' }),
+  );
   await app.listen(3000);
 }
 bootstrap();

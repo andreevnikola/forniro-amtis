@@ -142,4 +142,6 @@ export class Order {
     description: 'List of ordered products',
   })
   products: OrderedProduct[];
+
+  stripe_id: string;
 }

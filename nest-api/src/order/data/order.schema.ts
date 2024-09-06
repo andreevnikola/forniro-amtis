@@ -16,6 +16,7 @@ export const OrderSchema = new mongoose.Schema<Order>(
     phone_number: String,
     email: String,
     payed: Boolean,
+    stripe_id: String,
     products: [
       {
         quantity: Number,

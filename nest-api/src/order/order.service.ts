@@ -62,7 +62,7 @@ export class OrderService {
       ...createOrderDto,
       products: relatedProducts,
       payed: false,
-      currency: 'USD',
+      currency: 'bgn',
       overall_price: overall_price,
     });
     const created = await createdOrder.save();
@@ -90,5 +90,17 @@ export class OrderService {
     }
 
     return { found: true, success: true };
+  }
+
+  async pay(id: string, stripe_id: string): Promise<boolean> {
+    try {
+      const updated = await this.orderModel
+        .findByIdAndUpdate(id, { payed: true, stripe_id: stripe_id })
+        .exec();
+
+      return true;
+    } catch (error) {
+      return false;
+    }
   }
 }
