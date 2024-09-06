@@ -14,7 +14,7 @@ export class MailingListService {
     private readonly mailingListModel: Model<MailingList>,
   ) {
     this.transporter = createTransport({
-      host: 'smtp.office365.com',
+      host: 'smtp.gmail.com',
       port: 587,
       secure: false,
       auth: {
@@ -63,20 +63,15 @@ export class MailingListService {
     if (!email) {
       const subscribers = await this.findAll();
 
-      await Promise.all(
-        subscribers.map(
-          async (recipient) =>
-            await this.transporter.sendMail({
-              from: process.env.EMAIL_USER,
-              to: recipient.email,
-              subject,
-              html: body,
-            }),
-        ),
-      );
+      for (const recipient of subscribers) {
+        await this.transporter.sendMail({
+          to: recipient.email,
+          subject,
+          html: body,
+        });
+      }
     } else {
       await this.transporter.sendMail({
-        from: process.env.EMAIL_USER,
         to: email,
         subject,
         html: body,
