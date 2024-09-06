@@ -6,6 +6,7 @@ import { S3Service } from './s3.service';
 import { CategoryModule } from './category/category.module';
 import { OrderModule } from './order/order.module';
 import { StripeModule } from './stripe/stripe.module';
+import { MailingListModule } from './mailing-list/mailing-list.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { StripeModule } from './stripe/stripe.module';
     ConfigModule.forRoot(),
     CategoryModule,
     OrderModule,
+    MailingListModule,
   ],
   controllers: [],
   providers: [S3Service, Logger],
