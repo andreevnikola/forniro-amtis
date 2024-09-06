@@ -12,7 +12,7 @@ import { OrderService } from './order.service';
 import { CreateOrderDto } from './data/create-order.dto';
 import { UpdateOrderDto } from './data/update-order.dto';
 import { ValidatedIdParam } from 'src/constants';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { OrderAsResponse } from './data/order-as-response';
 
 @ApiTags('Order Operations')
@@ -39,6 +39,13 @@ export class OrderController {
   }
 
   @Get(':id')
+  @ApiOperation({ summary: 'Get order by id' })
+  @ApiResponse({
+    status: 200,
+    description: 'Order found and returned',
+    type: OrderAsResponse,
+  })
+  @ApiParam({ name: 'id', type: String, description: 'Order id' })
   async findOne(@Param() params: ValidatedIdParam): Promise<OrderAsResponse> {
     try {
       var order = await this.orderService.findOne(params.id);
@@ -57,5 +64,17 @@ export class OrderController {
       overall_price: order.overall_price,
       phone_number: order.phone_number,
     };
+  }
+
+  @Delete(':id')
+  @ApiOperation({ summary: 'Delete order by id' })
+  @ApiResponse({ status: 200, description: 'Order deleted successfully' })
+  @ApiParam({ name: 'id', type: String, description: 'Order id' })
+  async remove(@Param() params: ValidatedIdParam) {
+    const success = await this.orderService.delete(params.id);
+    if (!success) {
+      throw new HttpException('Order deletion failed', 500);
+    }
+    return;
   }
 }

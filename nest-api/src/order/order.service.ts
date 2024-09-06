@@ -73,4 +73,14 @@ export class OrderService {
   findOne(id: string) {
     return this.orderModel.findById(id).exec();
   }
+
+  async delete(id: string): Promise<FoundAndSucessObject> {
+    try {
+      const deleted = await this.orderModel.findByIdAndDelete(id).exec();
+    } catch {
+      return { found: false, success: false };
+    }
+
+    return { found: true, success: true };
+  }
 }
