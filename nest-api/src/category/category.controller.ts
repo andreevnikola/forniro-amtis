@@ -9,6 +9,7 @@ import {
   UseInterceptors,
   UploadedFile,
   HttpException,
+  Query,
 } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import {
@@ -16,12 +17,21 @@ import {
   CreateCategoryResponse,
 } from './data/create-category.dto';
 import { UpdateCategoryDto } from './data/update-category.dto';
-import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiOperation,
+  ApiParam,
+  ApiQuery,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { S3Service } from 'src/s3.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ObjectId } from 'mongoose';
 import { CrudProductService } from 'src/product/product.crud.service';
 import { ValidatedIdParam } from 'src/constants';
+import { CategoryDetailsResponse } from './data/category-details-response';
+import { Category } from './data/category.schema';
+import { CategoryDetailQueryParams } from './data/category-details-query-params';
 
 @Controller('category')
 @ApiTags('Category Operations')
@@ -71,21 +81,45 @@ export class CategoryController {
   @ApiResponse({
     status: 200,
     description: 'List of categories',
+    type: [Category],
   })
   findAll() {
     return this.categoryService.findAll();
   }
 
-  @Get(':id')
+  @Get(':id/products')
   @ApiOperation({ summary: 'Get a category by id with its related products' })
   @ApiParam({ name: 'id', description: 'Category ID', required: true })
-  async findOne(@Param() params: ValidatedIdParam) {
+  @ApiQuery({ name: 'limit', required: false, type: Number })
+  @ApiQuery({ name: 'page', required: false, type: Number })
+  @ApiQuery({ name: 'sortBy', required: false, type: String, example: 'price' })
+  @ApiQuery({
+    name: 'sortOrder',
+    required: false,
+    type: String,
+    example: 'asc',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Category found and returned',
+    type: CategoryDetailsResponse,
+  })
+  async findOne(
+    @Param() params: ValidatedIdParam,
+    @Query() query: CategoryDetailQueryParams,
+  ): Promise<CategoryDetailsResponse> {
     // console.log(params.id);
-    const category = await this.categoryService.findOne(params.id);
+    const category = await this.categoryService.findOne(
+      params.id,
+      query.limit || 16,
+      query.page || 1,
+      query.sortBy || 'newest',
+      query.sortOrder || 'desc',
+    );
     if (!category) {
       throw new HttpException('Category not found', 404);
     }
-    return category;
+    return category as CategoryDetailsResponse;
   }
 
   @Patch(':id')

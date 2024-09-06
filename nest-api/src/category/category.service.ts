@@ -28,14 +28,30 @@ export class CategoryService {
     return await this.categoryModel.find().exec();
   }
 
-  async findOne(id: string) {
+  async findOne(
+    id: string,
+    limit?: number,
+    page?: number,
+    sortBy?: 'price' | 'newest' | 'name',
+    sortOrder?: 'asc' | 'desc',
+  ) {
     const category = await this.categoryModel.findById(id).exec();
     if (!category) {
       return null;
     }
+    if (limit)
+      return {
+        category: category.toObject(),
+        products: await this.productService.findByCategory(
+          category._id,
+          limit,
+          page,
+          sortBy,
+          sortOrder,
+        ),
+      };
     return {
       category: category.toObject(),
-      products: await this.productService.findByCategory(category._id),
     };
   }
 

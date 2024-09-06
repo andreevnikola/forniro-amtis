@@ -5,7 +5,7 @@ export const CategorySchema = new mongoose.Schema<Category>({
   cover_photo_url: String,
 });
 
-export interface Category {
+export class Category {
   _id?: string;
   name: string;
   cover_photo_url: string;

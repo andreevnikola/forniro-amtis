@@ -90,6 +90,12 @@ export class Product {
   avaliable_colors: string[];
 
   compressed_cover_photo_url?: string;
+
+  @ApiProperty({
+    description: 'Date and time when the product was created',
+    example: '2021-03-01T00:00:00.000Z',
+  })
+  createdAt?: Date;
 }
 
 export type Size = 'XS' | 'S' | 'M' | 'L' | 'XL' | 'XXL' | 'XXXL';

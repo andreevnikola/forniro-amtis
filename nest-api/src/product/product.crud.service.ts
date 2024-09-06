@@ -20,15 +20,32 @@ export class CrudProductService {
     return created.toObject();
   }
 
-  async findByCategory(categoryId: string): Promise<NotDetailedProduct[]> {
+  async findByCategory(
+    categoryId: string,
+    limit: number,
+    page: number,
+    sortBy: 'price' | 'newest' | 'name',
+    sortOrder: 'asc' | 'desc',
+  ): Promise<NotDetailedProduct[]> {
+    const order = sortOrder === 'asc' ? 1 : -1;
     const products = await this.productModel
       .find({ category: new mongoose.mongo.ObjectId(categoryId) })
+      .sort(
+        sortBy === 'price'
+          ? { original_price: order }
+          : sortBy === 'newest'
+            ? { createdAt: order }
+            : { name: order },
+      )
+      .skip(limit * (page - 1))
+      .limit(limit)
       .exec();
     return products.map((product) => ({
       name: product.name,
-      description: product.description,
+      short_description: product.short_description,
       cover_photo_url: product.cover_photo_url,
       current_discount: product.current_discount,
+      createdAt: product.createdAt,
       current_price:
         product.original_price -
         product.original_price * (product.current_discount / 100),
