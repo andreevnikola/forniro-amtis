@@ -57,7 +57,6 @@ export class OrderService {
       },
       0,
     );
-    console.log('overall_price', overall_price);
 
     const createdOrder = new this.orderModel({
       ...createOrderDto,
@@ -72,6 +71,6 @@ export class OrderService {
   }
 
   findOne(id: string) {
-    return `This action returns a #${id} order`;
+    return this.orderModel.findById(id).exec();
   }
 }

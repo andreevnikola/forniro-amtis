@@ -13,6 +13,7 @@ import { CreateOrderDto } from './data/create-order.dto';
 import { UpdateOrderDto } from './data/update-order.dto';
 import { ValidatedIdParam } from 'src/constants';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { OrderAsResponse } from './data/order-as-response';
 
 @ApiTags('Order Operations')
 @Controller('order')
@@ -38,7 +39,23 @@ export class OrderController {
   }
 
   @Get(':id')
-  findOne(@Param() params: ValidatedIdParam) {
-    return this.orderService.findOne(params.id);
+  async findOne(@Param() params: ValidatedIdParam): Promise<OrderAsResponse> {
+    try {
+      var order = await this.orderService.findOne(params.id);
+    } catch (error) {
+      throw new HttpException('Order not found', 404);
+    }
+
+    return {
+      _id: order._id,
+      address: order.address,
+      email: order.email,
+      currency: order.currency,
+      products: order.products,
+      first_name: order.first_name,
+      last_name: order.last_name,
+      overall_price: order.overall_price,
+      phone_number: order.phone_number,
+    };
   }
 }
