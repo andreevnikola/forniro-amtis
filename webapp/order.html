@@ -60,7 +60,7 @@
             width="1920" />
         <div class="absolute inset-0 bg-white bg-opacity-70 flex flex-col items-center justify-center">
             <h1 class="text-4xl font-bold">
-                Shop
+                Checkout
             </h1>
             <nav class="text-gray-600 mt-2">
                 <a class="hover:underline" href="#">
@@ -115,7 +115,145 @@
             </div>
         </div>
     </div>
-
+    <section>
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+                <h2 class="text-2xl font-bold mb-6">Billing details</h2>
+                <form class="space-y-4">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">First Name</label>
+                            <input type="text"
+                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" />
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Last Name</label>
+                            <input type="text"
+                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" />
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Company Name (Optional)</label>
+                        <input type="text" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Country / Region</label>
+                        <select class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
+                            <option>Sri Lanka</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Street address</label>
+                        <input type="text" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Town / City</label>
+                        <input type="text" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Province</label>
+                        <select class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
+                            <option>Western Province</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">ZIP code</label>
+                        <input type="text" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Phone</label>
+                        <input type="text" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Email address</label>
+                        <input type="email" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Additional information</label>
+                        <input type="text" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" />
+                    </div>
+                </form>
+            </div>
+            <div>
+                <h2 class="text-2xl font-bold mb-6">Product</h2>
+                <div class="border-b border-gray-300 pb-4 mb-4">
+                    <div class="flex justify-between text-sm">
+                        <span>Asgaard sofa × 1</span>
+                        <span>Rs. 250,000.00</span>
+                    </div>
+                    <div class="flex justify-between text-sm mt-2">
+                        <span>Subtotal</span>
+                        <span>Rs. 250,000.00</span>
+                    </div>
+                    <div class="flex justify-between text-lg font-bold mt-2">
+                        <span>Total</span>
+                        <span class="text-orange-500">Rs. 250,000.00</span>
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <div>
+                        <input type="radio" id="bank" name="payment" class="mr-2" checked>
+                        <label for="bank" class="text-sm font-medium">Direct Bank Transfer</label>
+                        <p class="text-sm text-gray-500 mt-1">Make your payment directly into our bank account. Please
+                            use your Order ID as the payment reference. Your order will not be shipped until the funds
+                            have cleared in our account.</p>
+                    </div>
+                    <div>
+                        <input type="radio" id="bank2" name="payment" class="mr-2">
+                        <label for="bank2" class="text-sm font-medium">Direct Bank Transfer</label>
+                    </div>
+                    <div>
+                        <input type="radio" id="cod" name="payment" class="mr-2">
+                        <label for="cod" class="text-sm font-medium">Cash On Delivery</label>
+                    </div>
+                    <p class="text-sm text-gray-500">Your personal data will be used to support your experience
+                        throughout this website, to manage access to your account, and for other purposes described in
+                        our <a href="#" class="text-black font-medium">privacy policy</a>.</p>
+                    <button class="w-full bg-black text-white py-2 rounded-md">Place order</button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div>
+                <h2 class="text-2xl font-bold">Furniro.</h2>
+                <address class="mt-4 not-italic text-gray-500">
+                    400 University Drive Suite 200 Coral Gables,<br>
+                    FL 33134 USA
+                </address>
+            </div>
+            <div>
+                <h3 class="text-lg font-medium text-gray-900">Links</h3>
+                <ul class="mt-4 space-y-2">
+                    <li><a href="#" class="hover:underline">Home</a></li>
+                    <li><a href="#" class="hover:underline">Shop</a></li>
+                    <li><a href="#" class="hover:underline">About</a></li>
+                    <li><a href="#" class="hover:underline">Contact</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-lg font-medium text-gray-900">Help</h3>
+                <ul class="mt-4 space-y-2">
+                    <li><a href="#" class="hover:underline">Payment Options</a></li>
+                    <li><a href="#" class="hover:underline">Returns</a></li>
+                    <li><a href="#" class="hover:underline">Privacy Policies</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-lg font-medium text-gray-900">Newsletter</h3>
+                <form class="mt-4 flex">
+                    <input type="email" placeholder="Enter Your Email Address"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-gray-500">
+                    <button type="submit"
+                        class="px-4 py-2 bg-gray-900 text-white rounded-r-md hover:bg-gray-700">SUBSCRIBE</button>
+                </form>
+            </div>
+        </div>
+        <div class="mt-12 border-t border-gray-200 pt-8">
+            <p class="text-center text-gray-500">&copy; 2023 furniro. All rights reserved</p>
+        </div>
+    </footer>
 </body>
 </head>
 
