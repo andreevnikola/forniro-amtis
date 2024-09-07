@@ -7,6 +7,7 @@ import { CategoryModule } from './category/category.module';
 import { OrderModule } from './order/order.module';
 import { StripeModule } from './stripe/stripe.module';
 import { MailingListModule } from './mailing-list/mailing-list.module';
+import { FeedbackModule } from './feedback/feedback.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { MailingListModule } from './mailing-list/mailing-list.module';
     CategoryModule,
     OrderModule,
     MailingListModule,
+    FeedbackModule,
   ],
   controllers: [],
   providers: [S3Service, Logger],
