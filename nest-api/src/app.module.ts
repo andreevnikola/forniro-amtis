@@ -1,4 +1,4 @@
-import { Logger, Module } from '@nestjs/common';
+import { Logger, MiddlewareConsumer, Module } from '@nestjs/common';
 import { ProductsModule } from './product/product.module';
 import { DatabaseModule } from './database/database.module';
 import { ConfigModule } from '@nestjs/config';
@@ -23,6 +23,12 @@ import { join } from 'path';
     FeedbackModule,
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', '..', 'webapp'),
+      exclude: ['/api*'], // This ensures that the API routes are not served by the static module
+      serveRoot: '/', // This makes the static files available from the root
+      renderPath: '*', // This allows serving files dynamically based on the URL
+      serveStaticOptions: {
+        extensions: ['html'], // This ensures that .html is automatically appended if missing
+      },
     }),
   ],
   controllers: [],
