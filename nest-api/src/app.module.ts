@@ -8,6 +8,8 @@ import { OrderModule } from './order/order.module';
 import { StripeModule } from './stripe/stripe.module';
 import { MailingListModule } from './mailing-list/mailing-list.module';
 import { FeedbackModule } from './feedback/feedback.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -19,6 +21,9 @@ import { FeedbackModule } from './feedback/feedback.module';
     OrderModule,
     MailingListModule,
     FeedbackModule,
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', '..', 'client'),
+    }),
   ],
   controllers: [],
   providers: [S3Service, Logger],
