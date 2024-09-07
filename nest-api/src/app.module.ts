@@ -22,7 +22,7 @@ import { join } from 'path';
     MailingListModule,
     FeedbackModule,
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', '..', 'client'),
+      rootPath: join(__dirname, '..', '..', 'webapp'),
     }),
   ],
   controllers: [],
