@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Furniro</title>
+    <link rel="icon" href="image/a74736d502746301ed573ed8940fc322.png" type="image/x-icon">
+    <link rel="shortcut icon" href="image/a74736d502746301ed573ed8940fc322.png" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@3.6.4/dist/full.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="./styles.css" type="text/css">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+<body>
+    <div class="flex justify-between items-center">
+        <div class="flex items-center">
+            <img src="image/a74736d502746301ed573ed8940fc322.png" alt="Furniro logo" class="w-16 h-115 mr-4">
+            <h1 class="text-2xl font-bold">Furniro</h1>
+        </div>
+        <div class="flex">
+            <a href="/" class="mr-6">Home</a>
+            <a href="/shop" class="mr-6">Shop</a>
+            <a href="/about" class="mr-6">About</a>
+            <a href="/contact" class="mr-6">Contact</a>
+        </div>
+        <div class="flex items-center">
+            <a href="/profile" class="mr-6">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+            </a>
+            <a href="/search" class="mr-6">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+            </a>
+            <a href="/wishlist" class="mr-6">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>
+            </a>
+            <a href="/cart" class="mr-6">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm0 0h.01" />
+                </svg>
+            </a>
+        </div>
+    </div>
+    <div class="relative bg-[#F9F1E7]">
+        <img alt="Background image of a cozy shop with plants and shelves" class="w-full h-72 object-cover" height="300"
+            src="https://oaidalleapiprodscus.blob.core.windows.net/private/org-BVbpSZmLndA7MfHIxv2ahIKS/user-IBY8IaMXtVn7IVIdZeyvjx16/img-Go5zQtim9VJYUka9a6kIWG6s.png?st=2024-09-07T09%3A11%3A19Z&amp;se=2024-09-07T11%3A11%3A19Z&amp;sp=r&amp;sv=2024-08-04&amp;sr=b&amp;rscd=inline&amp;rsct=image/png&amp;skoid=d505667d-d6c1-4a0a-bac7-5c84a87759f8&amp;sktid=a48cca56-e6da-484e-a814-9c849652bcb3&amp;skt=2024-09-07T07%3A44%3A03Z&amp;ske=2024-09-08T07%3A44%3A03Z&amp;sks=b&amp;skv=2024-08-04&amp;sig=pXIxz7guoTFKNxpT6wzR3PwZ9ZhzUO7gD4yKBNTEyng%3D"
+            width="1920" />
+        <div class="absolute inset-0 bg-white bg-opacity-70 flex flex-col items-center justify-center">
+            <h1 class="text-4xl font-bold">
+                Shop
+            </h1>
+            <nav class="text-gray-600 mt-2">
+                <a class="hover:underline" href="#">
+                    Home
+                </a>
+                &gt;
+                <a class="hover:underline" href="#">
+                    Shop
+                </a>
+            </nav>
+        </div>
+    </div>
+    <div class="bg-gray-50 py-4 px-6 flex items-center justify-between">
+        <div class="flex items-center space-x-4">
+            <button class="flex items-center space-x-2 text-gray-700">
+                <i class="fas fa-sliders-h">
+                </i>
+                <span>
+                    Filter
+                </span>
+            </button>
+            <div class="flex items-center space-x-2">
+                <button class="text-gray-700">
+                    <i class="fas fa-th">
+                    </i>
+                </button>
+                <button class="text-gray-700">
+                    <i class="fas fa-bars">
+                    </i>
+                </button>
+            </div>
+            <span class="text-gray-700">
+                Showing 1–16 of 32 results
+            </span>
+        </div>
+        <div class="flex items-center space-x-4">
+            <div class="flex items-center space-x-2">
+                <span class="text-gray-700">
+                    Show
+                </span>
+                <input class="w-12 text-center border border-gray-300 rounded-md" type="number" value="16" />
+            </div>
+            <div class="flex items-center space-x-2">
+                <span class="text-gray-700">
+                    Short by
+                </span>
+                <select class="border border-gray-300 rounded-md px-2 py-1">
+                    <option>
+                        Default
+                    </option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+
+</head>
+
+</html>
