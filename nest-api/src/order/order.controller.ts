@@ -15,6 +15,7 @@ import { ValidatedIdParam } from 'src/constants';
 import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { OrderAsResponse } from './data/order-as-response';
 import { StripeService } from 'src/stripe/stripe.service';
+import { MailingListService } from 'src/mailing-list/mailing-list.service';
 
 @ApiTags('Order Operations')
 @Controller('order')
@@ -22,6 +23,7 @@ export class OrderController {
   constructor(
     private readonly orderService: OrderService,
     private readonly stripeService: StripeService,
+    private readonly mailingListService: MailingListService,
   ) {}
 
   @ApiOperation({ summary: 'Create a new order' })
@@ -99,6 +101,12 @@ export class OrderController {
     if (!success.success) {
       throw new HttpException('Refund failed', 500);
     }
+
+    await this.mailingListService.sendEmail(
+      'Order Refunded',
+      `Your order with id ${params.id} has been refunded. You will recieve your money back in 3-5 business days.`,
+    );
+
     return;
   }
 }

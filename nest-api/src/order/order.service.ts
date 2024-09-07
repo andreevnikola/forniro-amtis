@@ -6,12 +6,14 @@ import { Model } from 'mongoose';
 import { Order, OrderedProduct } from './data/order';
 import { FoundAndSucessObject } from 'src/constants';
 import { Product } from 'src/product/data/product.interface';
+import { MailingListService } from 'src/mailing-list/mailing-list.service';
 
 @Injectable()
 export class OrderService {
   constructor(
     @Inject('ORDER_MODEL') private readonly orderModel: Model<Order>,
     @Inject('PRODUCT_MODEL') private readonly productModel: Model<Product>,
+    private readonly mailingListService: MailingListService,
   ) {}
 
   async getRelatedProducts(
@@ -103,6 +105,12 @@ export class OrderService {
       const updated = await this.orderModel
         .findByIdAndUpdate(id, { payed: true, payment_intent: payment_intent })
         .exec();
+
+      await this.mailingListService.sendEmail(
+        'Payment has been made sucessfully',
+        `The payment for your order with an overall price tag of ${updated.overall_price}BGN has been accepted.`,
+        updated.email,
+      );
 
       return true;
     } catch (error) {

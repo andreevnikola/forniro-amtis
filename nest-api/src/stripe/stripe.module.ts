@@ -9,6 +9,8 @@ import { ProductsModule } from 'src/product/product.module';
 import { ordreProviders } from 'src/order/order.provider';
 import { productProviders } from 'src/product/product.provider';
 import { DatabaseModule } from 'src/database/database.module';
+import { mailingListProviders } from 'src/mailing-list/mailing-list.provider';
+import { MailingListService } from 'src/mailing-list/mailing-list.service';
 
 @Module({
   imports: [
@@ -20,10 +22,12 @@ import { DatabaseModule } from 'src/database/database.module';
   providers: [
     StripeService,
     CrudProductService,
+    MailingListService,
     OrderService,
     Logger,
     ...ordreProviders,
     ...productProviders,
+    ...mailingListProviders,
   ],
   controllers: [StripeController],
   exports: [StripeService],

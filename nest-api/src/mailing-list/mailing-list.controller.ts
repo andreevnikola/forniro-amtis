@@ -29,6 +29,16 @@ export class MailingListController {
         400,
       );
     }
+
+    await this.mailingListService.sendEmail(
+      'Welcome to our mailing list!',
+      'You have successfully subscribed to our mailing list!. To unsubscribe go to the following url: ' +
+        process.env.APP_LOCATION +
+        '/api/' +
+        createMailingListDto.email +
+        '/unsubscribe',
+      createMailingListDto.email,
+    );
   }
 
   @Get()
