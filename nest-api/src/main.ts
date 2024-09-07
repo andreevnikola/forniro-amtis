@@ -10,7 +10,7 @@ async function bootstrap() {
   });
 
   app.setGlobalPrefix('api');
-
+  app.enableCors();
   const config = new DocumentBuilder()
     .setTitle('Furniro API')
     .setDescription('This is the API for the Furniro web store')
