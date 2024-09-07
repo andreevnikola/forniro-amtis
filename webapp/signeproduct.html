@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Furniro</title>
+    <link rel="icon" href="image/a74736d502746301ed573ed8940fc322.png" type="image/x-icon">
+    <link rel="shortcut icon" href="image/a74736d502746301ed573ed8940fc322.png" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@3.6.4/dist/full.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="./styles.css" type="text/css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        function changeMainImage(src) {
+            document.getElementById('mainImage').src = src;
+        }
+    </script>
+
+<body>
+    <div class="flex justify-between items-center">
+        <div class="flex items-center">
+            <img src="image/a74736d502746301ed573ed8940fc322.png" alt="Furniro logo" class="w-16 h-115 mr-4">
+            <h1 class="text-2xl font-bold">Furniro</h1>
+        </div>
+        <div class="flex">
+            <a href="/" class="mr-6">Home</a>
+            <a href="/shop" class="mr-6">Shop</a>
+            <a href="/about" class="mr-6">About</a>
+            <a href="/contact" class="mr-6">Contact</a>
+        </div>
+        <div class="flex items-center">
+            <a href="/profile" class="mr-6">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+            </a>
+            <a href="/search" class="mr-6">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+            </a>
+            <a href="/wishlist" class="mr-6">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>
+            </a>
+            <a href="/cart" class="mr-6">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm0 0h.01" />
+                </svg>
+            </a>
+        </div>
+    </div>
+    <div class="container mx-auto">
+        <nav class="text-sm text-gray-500 mb-4 h-90 bg-[#F9F1E7]">
+            <a href="index.html" class="hover:text-gray-700">Home</a> &gt;
+            <a href="" class="hover:text-gray-700">Shop</a> &gt;
+            <span class="text-gray-700">Asgaard sofa</span>
+        </nav>
+        <div class="flex">
+            <div class="w-1.2">
+                <div class="space-y-4 bg-[#F9F1E7]">
+                    <img src="image/Outdoor sofa set 2.png" class="w-full cursor-pointer"
+                        onclick="changeImage('https://placehold.co/600x400')">
+                    <img src="image/Outdoor sofa set 2.png" class="w-full cursor-pointer"
+                        onclick="changeImage('https://placehold.co/600x400/gray')">
+                    <img src="image/Outdoor sofa set 2.png" class="w-full cursor-pointer"
+                        onclick="changeImage('https://placehold.co/600x400/black')">
+                    <img src="image/Outdoor sofa set 2.png" class="w-full cursor-pointer"
+                        onclick="changeImage('https://placehold.co/600x400/yellow')">
+                </div>
+            </div>
+            <div class="w-1/2 pl-8">
+                <div class="bg-[#F9F1E7] p-6 rounded-lg">
+                    <img src="image/Asgaard sofa 3 (1).png" alt="Main image of Asgaard sofa" id="mainImage"
+                        class="w-full">
+                </div>
+            </div>
+            <div class="w-1/4 pl-8">
+                <div class="mt-8">
+                    <h1 class="text-3xl font-semibold">Asgaard sofa</h1>
+                    <p class="text-2xl text-gray-600 mt-2">Rs. 250,000.00</p>
+                    <div class="flex items-center mt-4">
+                        <div class="flex items-center text-yellow-500">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="text-gray-500 ml-2">5 Customer Review</p>
+                    </div>
+                    <p class="text-gray-700 mt-4">Setting the bar as one of the loudest speakers in its class, the
+                        Kilburn is a compact, stout-hearted hero with a well-balanced audio which boasts a clear
+                        midrange and extended highs for a sound.</p>
+                    <div class="mt-6">
+                        <h2 class="text-lg font-medium">Size</h2>
+                        <div class="flex space-x-2 mt-2">
+                            <button class="px-4 py-2 border rounded-lg text-gray-700">L</button>
+                            <button class="px-4 py-2 border rounded-lg text-gray-700">XL</button>
+                            <button class="px-4 py-2 border rounded-lg text-gray-700">XS</button>
+                        </div>
+                    </div>
+                    <div class="mt-6">
+                        <h2 class="text-lg font-medium">Color</h2>
+                        <div class="flex space-x-2 mt-2">
+                            <button class="w-8 h-8 rounded-full bg-purple-500"></button>
+                            <button class="w-8 h-8 rounded-full bg-black"></button>
+                            <button class="w-8 h-8 rounded-full bg-yellow-500"></button>
+                        </div>
+                    </div>
+                    <div class="flex items-center mt-6">
+                        <button class="px-4 py-2 border rounded-lg">-</button>
+                        <span class="px-4">1</span>
+                        <button class="px-4 py-2 border rounded-lg">+</button>
+                        <button class="ml-4 px-6 py-2 bg-black text-white rounded-lg">Add To Cart</button>
+                        <button class="ml-4 px-6 py-2 border rounded-lg">+ Compare</button>
+                    </div>
+                    <div class="mt-8">
+                        <p class="text-gray-500">SKU : SS001</p>
+                        <p class="text-gray-500">Category : Sofas</p>
+                        <p class="text-gray-500">Tags : Sofa, Chair, Home, Shop</p>
+                        <div class="flex items-center mt-4">
+                            <span class="text-gray-500">Share :</span>
+                            <a href="#" class="ml-2 text-gray-500 hover:text-gray-700"><i
+                                    class="fab fa-facebook-f"></i></a>
+                            <a href="#" class="ml-2 text-gray-500 hover:text-gray-700"><i
+                                    class="fab fa-linkedin-in"></i></a>
+                            <a href="#" class="ml-2 text-gray-500 hover:text-gray-700"><i
+                                    class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <section>
+
+        <div class="max-w-4xl mx-auto p-8">
+            <div class="flex justify-center space-x-8 border-b border-gray-300 pb-4 mb-8">
+                <a class="text-black font-medium" href="#">
+                    Description
+                </a>
+                <a class="text-gray-400" href="#">
+                    Additional Information
+                </a>
+                <a class="text-gray-400" href="#">
+                    Reviews
+                    <span class="font-medium">
+                        [5]
+                    </span>
+                </a>
+            </div>
+            <div class="text-center mb-8">
+                <p class="mb-4">
+                    Embodying the raw, wayward spirit of rock ‘n’ roll, the Kilburn portable active stereo speaker takes
+                    the unmistakable look and sound of Marshall, unplugs the chords, and takes the show on the road.
+                </p>
+                <p>
+                    Weighing in under 7 pounds, the Kilburn is a lightweight piece of vintage styled engineering.
+                    Setting the bar as one of the loudest speakers in its class, the Kilburn is a compact, stout-hearted
+                    hero with a well-balanced audio which boasts a clear midrange and extended highs for a sound that is
+                    both articulate and pronounced. The analogue knobs allow you to fine tune the controls to your
+                    personal preferences while the guitar-influenced leather strap enables easy and stylish travel.
+                </p>
+            </div>
+            <div class="flex justify-center space-x-8">
+                <img alt="A beige sofa with multiple cushions" class="rounded-lg shadow-md" height="300"
+                    src="https://oaidalleapiprodscus.blob.core.windows.net/private/org-RcpoXHkzChYnDbFAyeQ8tamr/user-ehrvabJ3DufsCu8YJ7PqY5gl/img-gaiP5j2DFHWNadH3q2uOfLN9.png?st=2024-09-06T22%3A32%3A36Z&amp;se=2024-09-07T00%3A32%3A36Z&amp;sp=r&amp;sv=2024-08-04&amp;sr=b&amp;rscd=inline&amp;rsct=image/png&amp;skoid=d505667d-d6c1-4a0a-bac7-5c84a87759f8&amp;sktid=a48cca56-e6da-484e-a814-9c849652bcb3&amp;skt=2024-09-06T21%3A54%3A06Z&amp;ske=2024-09-07T21%3A54%3A06Z&amp;sks=b&amp;skv=2024-08-04&amp;sig=4EPTObL3XLZTDrDeSQr3jKnTb6TXoyGGLeJTWauZzKw%3D"
+                    width="400" />
+                <img alt="A beige sectional sofa with multiple cushions" class="rounded-lg shadow-md" height="300"
+                    src="https://oaidalleapiprodscus.blob.core.windows.net/private/org-RcpoXHkzChYnDbFAyeQ8tamr/user-ehrvabJ3DufsCu8YJ7PqY5gl/img-1i9GlmfPqWFjtHis3RRA9v9E.png?st=2024-09-06T22%3A32%3A35Z&amp;se=2024-09-07T00%3A32%3A35Z&amp;sp=r&amp;sv=2024-08-04&amp;sr=b&amp;rscd=inline&amp;rsct=image/png&amp;skoid=d505667d-d6c1-4a0a-bac7-5c84a87759f8&amp;sktid=a48cca56-e6da-484e-a814-9c849652bcb3&amp;skt=2024-09-06T22%3A21%3A03Z&amp;ske=2024-09-07T22%3A21%3A03Z&amp;sks=b&amp;skv=2024-08-04&amp;sig=c/4gNHE%2BItr0/sqMAgG3kO6DURm1T0iomYB6Rn7M63M%3D"
+                    width="400" />
+            </div>
+        </div>
+    </section>
+    <footer class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div>
+                <h2 class="text-2xl font-bold">Furniro.</h2>
+                <address class="mt-4 not-italic text-gray-500">
+                    400 University Drive Suite 200 Coral Gables,<br>
+                    FL 33134 USA
+                </address>
+            </div>
+            <div>
+                <h3 class="text-lg font-medium text-gray-900">Links</h3>
+                <ul class="mt-4 space-y-2">
+                    <li><a href="#" class="hover:underline">Home</a></li>
+                    <li><a href="#" class="hover:underline">Shop</a></li>
+                    <li><a href="#" class="hover:underline">About</a></li>
+                    <li><a href="#" class="hover:underline">Contact</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-lg font-medium text-gray-900">Help</h3>
+                <ul class="mt-4 space-y-2">
+                    <li><a href="#" class="hover:underline">Payment Options</a></li>
+                    <li><a href="#" class="hover:underline">Returns</a></li>
+                    <li><a href="#" class="hover:underline">Privacy Policies</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-lg font-medium text-gray-900">Newsletter</h3>
+                <form class="mt-4 flex">
+                    <input type="email" placeholder="Enter Your Email Address"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-gray-500">
+                    <button type="submit"
+                        class="px-4 py-2 bg-gray-900 text-white rounded-r-md hover:bg-gray-700">SUBSCRIBE</button>
+                </form>
+            </div>
+        </div>
+        <div class="mt-12 border-t border-gray-200 pt-8">
+            <p class="text-center text-gray-500">&copy; 2023 furniro. All rights reserved</p>
+        </div>
+    </footer>
+
+
+    </head>
+
+</html>
