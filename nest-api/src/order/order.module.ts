@@ -5,6 +5,7 @@ import { ordreProviders } from './order.provider';
 import { CrudProductService } from 'src/product/product.crud.service';
 import { DatabaseModule } from 'src/database/database.module';
 import { productProviders } from 'src/product/product.provider';
+import { StripeService } from 'src/stripe/stripe.service';
 
 @Module({
   imports: [DatabaseModule],
@@ -12,6 +13,7 @@ import { productProviders } from 'src/product/product.provider';
   providers: [
     OrderService,
     CrudProductService,
+    StripeService,
     Logger,
     ...ordreProviders,
     ...productProviders,

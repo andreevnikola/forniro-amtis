@@ -81,7 +81,13 @@ export class OrderService {
       return { found: false, success: false };
     }
 
-    if (order.payed) return { found: true, success: false };
+    if (order.payed) {
+      const updated = await this.orderModel
+        .findByIdAndUpdate(id, { refunded: true })
+        .exec();
+
+      return { found: true, success: true };
+    }
 
     try {
       const deleted = await this.orderModel.findByIdAndDelete(id).exec();
@@ -92,10 +98,10 @@ export class OrderService {
     return { found: true, success: true };
   }
 
-  async pay(id: string, stripe_id: string): Promise<boolean> {
+  async pay(id: string, payment_intent: string): Promise<boolean> {
     try {
       const updated = await this.orderModel
-        .findByIdAndUpdate(id, { payed: true, stripe_id: stripe_id })
+        .findByIdAndUpdate(id, { payed: true, payment_intent: payment_intent })
         .exec();
 
       return true;

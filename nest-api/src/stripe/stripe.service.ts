@@ -10,6 +10,7 @@ import { OrderService } from 'src/order/order.service';
 import { CrudProductService } from 'src/product/product.crud.service';
 import { OrderAddress } from 'src/order/data/order';
 import { OrderCheckoutDto } from './data/order-checkout.dto';
+import { FoundAndSucessObject } from 'src/constants';
 
 @Injectable()
 export class StripeService {
@@ -105,7 +106,24 @@ export class StripeService {
     if (event.type === 'checkout.session.completed') {
       const session = event.data.object as Stripe.Checkout.Session; // Extract products from metadata
 
-      await this.orderService.pay(session.metadata.order_id, session.id);
+      await this.orderService.pay(
+        session.metadata.order_id,
+        session.payment_intent.toString(),
+      );
     }
+  }
+
+  async refundOnOrderCancelation(
+    orderId: string,
+  ): Promise<FoundAndSucessObject> {
+    const order = await this.orderService.findOne(orderId);
+
+    if (!order || !order.payed) return { found: false, success: false };
+
+    const refund = await this.stripe.refunds.create({
+      payment_intent: order.stripe_id,
+    });
+
+    await this.orderService.delete(orderId);
   }
 }

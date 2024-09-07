@@ -14,11 +14,15 @@ import { UpdateOrderDto } from './data/update-order.dto';
 import { ValidatedIdParam } from 'src/constants';
 import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { OrderAsResponse } from './data/order-as-response';
+import { StripeService } from 'src/stripe/stripe.service';
 
 @ApiTags('Order Operations')
 @Controller('order')
 export class OrderController {
-  constructor(private readonly orderService: OrderService) {}
+  constructor(
+    private readonly orderService: OrderService,
+    private readonly stripeService: StripeService,
+  ) {}
 
   @ApiOperation({ summary: 'Create a new order' })
   @ApiResponse({ status: 201, description: 'Order created successfully' })
@@ -77,6 +81,23 @@ export class OrderController {
     }
     if (!success.success) {
       throw new HttpException('Something went wrong', 500);
+    }
+    return;
+  }
+
+  @Post(':id/refund')
+  @ApiOperation({ summary: 'Get a refund on your order' })
+  @ApiParam({ name: 'id', type: String, description: 'Order id' })
+  @ApiResponse({ status: 200, description: 'Refund successful' })
+  async refund(@Param() params: ValidatedIdParam) {
+    const success = await this.stripeService.refundOnOrderCancelation(
+      params.id,
+    );
+    if (!success.found) {
+      throw new HttpException('Order not found', 404);
+    }
+    if (!success.success) {
+      throw new HttpException('Refund failed', 500);
     }
     return;
   }
