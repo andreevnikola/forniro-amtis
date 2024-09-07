@@ -15,3 +15,4 @@
 Developed by *Nikola Andreev*, *Blagovest Kostadinov*, *Viktor Krustev*
 
 Finished with a lot of love.
+byr
