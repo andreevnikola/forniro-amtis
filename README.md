@@ -12,6 +12,6 @@
   - TypeScript   
 
   
-Developed by *Nikola Andreev* as a backend developer and *Blagovest Kostadinov*, *Viktor Krustev* as frontenders.
+Developed by ***Nikola Andreev* as a backend developer** and *Blagovest Kostadinov*, *Viktor Krustev* as frontenders.
 
 Finished with a lot of love.
